@@ -23,4 +23,4 @@ Use -x option at the end of the command to enter FrameCrafter menu where you can
 # Command Syntax 
 $ python WebSocket_cURL.py <IP ADDRESS> <PORT> [-s|-b|-a] ["string"|binary file|array file] -x (optional)
 
-Please have a look at README.txt for actual syntax examples.
+Please have a look at HOWTO.txt for actual syntax examples.
