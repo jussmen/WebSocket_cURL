@@ -17,7 +17,8 @@ import sys
 import socket
 from contextlib import closing
 from array import array
-
+import click
+import re
 
 class SyntaxHandler():
     u''' This class handles command arguments '''
@@ -46,20 +47,22 @@ class SyntaxHandler():
 class WebSocket_cURL():
     u''' Open socket and establish WebSocket '''
     
-    def __init__(self, host, port, opcode, data_to_send):
+    def __init__(self, host, port, url, opcode, data_to_send, custom_header):
         # Constructing socket
         self.host = host
         self.port = int(port)
         self.bufsize = 4096
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Constructing header
-        self.header = 'GET /ws HTTP/1.1\n'
+        self.header = 'GET /' + url + ' HTTP/1.1\n'
         self.header += 'Host: ' + host + '\n'
         self.header += 'Connection: Upgrade\n'
         self.header += 'Upgrade: websocket\n'
         self.header += 'Sec-WebSocket-Version: 13\n'
         self.header += 'Sec-WebSocket-Key: n5twxG/tNPf8h3po+pNrPA==\n'
-        self.header += 'User-Agent: IE\n'
+        self.header += 'User-Agent: WebSocket_cURL\n'
+        for h in custom_header:
+            self.header += h + '\n'
         self.header += '\n'
         # Constructing data
         self.data_to_send = data_to_send
@@ -592,33 +595,40 @@ class FrameCrafter():
         #print ('Save current data to a file : W')
         print ('')
 
-if __name__ == '__main__':
-    # In case of -h or --help
-    SyntaxHandler = SyntaxHandler(sys.argv)
-    # Not -h or --help, then check length
-    if len(sys.argv) != 5 and len(sys.argv) != 6:
-        print ('\nSee help, -h or --help')
-        sys.exit()
-    SyntaxHandler.opcodeCheck(sys.argv[3]) 
-    
-    host = sys.argv[1]
-    port = sys.argv[2]
-    opcode = sys.argv[3]
-    data = sys.argv[4]
-    
-    DataHandler = DataHandler(opcode, data)
-    
-    if len(sys.argv) == 6:
-        crafter_enabled = sys.argv[5]
-        if crafter_enabled == '-x':
-            FrameCrafter = FrameCrafter(DataHandler.getArray())
-            data_to_send = FrameCrafter.frameAnalyzer()
+
+@click.command()
+@click.argument('HOST')
+@click.argument('PORT')
+@click.argument('URL')
+@click.option('-s', '--string', help='Give a string to send')
+@click.option('-b', '--binary', type=click.File('r'), help='Give a path of a binary data')
+@click.option('-a', '--array', type=click.File('r'), help='Give a path of frame hex data')
+@click.option('-e', '--editor', is_flag=True, help='This enters FrameCrafter menu')
+@click.option('-H', '--header', multiple=True, help='Add HTTP headers')
+def syntax_parser(host, port, url, string, binary, array, editor, header):
+    url = re.sub(r'^/', '', url)
+    if string:
+        opcode = '-s'
+        data = string
+        data_handler = DataHandler(opcode, data)
+    elif binary:
+        opcode = '-b'
+        data = binary
+        data_handler = DataHandler(opcode, data)
+    elif array:
+        opcode = 'a'
+        data = array
+        data_handler = DataHandler(opcode, data)
+    if header:
+        custom_header = []
+        for h in header:
+            custom_header.append(h) 
+    if editor: 
+        frame_crafter = FrameCrafter(data_handler.getArray()) 
+        data_to_send = frame_crafter.frameAnalyzer()
     else:
-        data_to_send = DataHandler.getArray()
-    
-    client = WebSocket_cURL(host, port, opcode, data_to_send).run()
+        data_to_send = data_handler.getArray()
+    client = WebSocket_cURL(host, port, url, opcode, data_to_send, custom_header).run()
 
-
-
-
-
+if __name__ == '__main__':
+    syntax_parser()
