@@ -42,13 +42,20 @@ Use --editor (-e) option at the end of the command to enter FrameCrafter menu wh
 
 # Command Syntax 
 
-$ python WebSocket_cURL.py --help                                                  
+$ python WebSocket_cURL.py --help
+
 Usage: WebSocket_cURL.py [OPTIONS] HOST PORT URL
 
 Options:
+
   -s, --string TEXT      Give a string to send
+
   -b, --binary FILENAME  Give a path of a binary data
+
   -a, --array FILENAME   Give a path of frame hex data
+
   -e, --editor           This enters FrameCrafter menu
+
   -H, --header TEXT      Add HTTP headers
+
   --help                 Show this message and exit.
