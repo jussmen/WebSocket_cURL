@@ -10,19 +10,19 @@ enables you to modify WebSocket frame, then send it or save to a file.
 
 # Supported Features
 
-General WebSocket_cURL features
+* General WebSocket_cURL features
 Send data in one-liner command like cURL command
 
-* Sending a string data. This is --string (-s) option. 
+Sending a string data. This is --string (-s) option. 
   
 $ python WebSocket_cURL HOST PORT URL --string "DEAD BEEF"
 
-* Sending a binary file. This is --binary (-b) option.
+Sending a binary file. This is --binary (-b) option.
 
 $ python WebSocket_cURL HOST PORT URL --binary myfile.bin
 
-* Sending an array file. This is --array (-a) option.
-  You can copy/paste array data from Wireshark or you can generate via FrameCrafter feature, --editor option.
+Sending an array file. This is --array (-a) option.
+You can copy/paste array data from Wireshark or you can generate via FrameCrafter feature, --editor option.
 
 $ cat myarray.txt (copied from Wireshark)
 
@@ -35,10 +35,10 @@ $ cat myarray.txt (copied from Wireshark)
 $ python WebSocket_cURL HOST PORT URL --array myarray.txt
 
 
-FrameCrafter
+* FrameCrafter
 Use --editor (-e) option at the end of the command to enter FrameCrafter menu where you can
-* flip/overwrite WebSocket frame fields. You can create crafted/malformed frame.
-* Save the modified data to a file so that you can read/send via -a option.
+flip/overwrite WebSocket frame fields. You can create crafted/malformed frame.
+Save the modified data to a file so that you can read/send via -a option.
 
 # Command Syntax 
 
