@@ -36,6 +36,7 @@ $ python WebSocket_cURL HOST PORT URL --array myarray.txt
 
 
 * FrameCrafter
+* 
 Use --editor (-e) option at the end of the command to enter FrameCrafter menu where you can
 flip/overwrite WebSocket frame fields. You can create crafted/malformed frame.
 Save the modified data to a file so that you can read/send via -a option.
