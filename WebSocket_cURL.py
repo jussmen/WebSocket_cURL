@@ -607,6 +607,7 @@ class FrameCrafter():
 @click.option('-H', '--header', multiple=True, help='Add HTTP headers')
 def syntax_parser(host, port, url, string, binary, array, editor, header):
     url = re.sub(r'^/', '', url)
+    custom_header = []
     if string:
         opcode = '-s'
         data = string
@@ -620,7 +621,6 @@ def syntax_parser(host, port, url, string, binary, array, editor, header):
         data = array
         data_handler = DataHandler(opcode, data)
     if header:
-        custom_header = []
         for h in header:
             custom_header.append(h) 
     if editor: 
