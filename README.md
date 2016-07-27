@@ -36,10 +36,43 @@ $ python WebSocket_cURL HOST PORT URL --array myarray.txt
 
 
 * FrameCrafter
-* 
+
 Use --editor (-e) option at the end of the command to enter FrameCrafter menu where you can
 flip/overwrite WebSocket frame fields. You can create crafted/malformed frame.
 Save the modified data to a file so that you can read/send via -a option.
+
+$ python WebSocket_cURL.py 192.168.0.10 9090 /ws -s "DEAD BEEF" -e                 
+-------------------------------------
+* Frame Header bits                 *
+-------------------------------------
+  1000000110001001 0100001001000101
+  0100010101000110 0000011000000000
+  0000010000000010
+-------------------------------------
+* Frame Header Analizer             *
+-------------------------------------
+FIN        [0th bit]: 1
+RSV     [1-3th bits]: 000
+opcode  [4-7th bits]: 0001
+MASK       [8th bit]: 1
+Length [9-15th bits]: 9 byte
+-----------------------------
+* Frame Crafter Menu        *
+-----------------------------
+Flip FIN bit: F
+Flip RSV1 bit: R1
+Flip RSV2 bit: R2
+Flip RSV3 bit: R3
+Overwrite Opcode: O
+Flip MASK bit: M
+Change Length: L
+Write to file: W
+
+Send frame as it is: S
+
+Input: 
+
+
 
 # Command Syntax 
 
