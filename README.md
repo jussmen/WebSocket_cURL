@@ -67,4 +67,4 @@ Options:
   --help                 Show this message and exit.
   
   
-  Note : You can add HTTP header with --header option but there is a few limitations. Default headers such as Sec-WebSocket-Version, Sec-WebSocket-Key, Host etc, can not be replaced by --header option. The option simply add another header so you will see duplicated headers. If you like to modify one of the default headers, you can modify in the source code.
+  Note : You can add HTTP header with --header option. It simply *add* another header, it does not replace existing default header. Default headers such as Sec-WebSocket-Version, Sec-WebSocket-Key, Host etc, can not be replaced by --header option. The option simply add another header so you will see duplicated headers. If you like to modify one of the default headers, you can modify in the source code.
