@@ -85,8 +85,10 @@ class WebSocket_cURL():
             print (self.header)
             self.sock.send(self.header)
             print(self.sock.recv(self.bufsize))
+            
+            #print('sending WebScoket frame')
             self.sock.send(self.data_to_send)
-            self.sock.recv(self.bufsize)
+            #self.sock.recv(self.bufsize)
             self.sock.send(self.arr_close_frame)
             self.sock.recv(self.bufsize)
         return 
@@ -101,6 +103,7 @@ class DataHandler():
         if op == '-a':
             self.readArray(data)
             self.genArrayFromHex()
+            print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         elif op == '-s':
             self.string = data
             self.payloadLen = len(data)
@@ -230,7 +233,7 @@ class DataHandler():
             self.genArrayFromInt()
          
     def readArray(self, file):
-        self.f = open(file)
+        self.f = file
         self.hexlist = self.f.read()
         self.hexlist = self.hexlist.replace(' ', '')
         self.hexlist = self.hexlist.replace('\n', '')
@@ -617,7 +620,7 @@ def syntax_parser(host, port, url, string, binary, array, editor, header):
         data = binary
         data_handler = DataHandler(opcode, data)
     elif array:
-        opcode = 'a'
+        opcode = '-a'
         data = array
         data_handler = DataHandler(opcode, data)
     if header:
