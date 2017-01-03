@@ -103,7 +103,6 @@ class DataHandler():
         if op == '-a':
             self.readArray(data)
             self.genArrayFromHex()
-            print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         elif op == '-s':
             self.string = data
             self.payloadLen = len(data)
