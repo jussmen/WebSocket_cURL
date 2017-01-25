@@ -239,7 +239,7 @@ class DataHandler():
         self.hexlist = self.hexlist.split(',')
          
     def readBinaryFile(self, file):
-        self.f = open(file, 'rb')
+        self.f = file
         self.binary_hexlist = []
         for b in self.f.read():
             self.binary_hexlist.append(hex(ord(b)))
