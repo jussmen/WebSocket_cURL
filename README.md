@@ -1,5 +1,6 @@
 # WebSocket_cURL
-cURL like command for WebSocket
+cURL like command for WebSocket. The main purpose of this tool is troubleshooting of WebSocket.
+cURL is a handy when troubleshoot, I wanted to have something similar with WebSocket.
 
 WebSocket_cURL is a command line tool like cURL command for WebSocket 
 which enables you to send a stirng or binary file as WebSocket data. 
@@ -7,6 +8,10 @@ Also you can replay array data from Wireshark capture.
 
 This script is not only sending data but also there is a cool feature, FrameCrafter, that 
 enables you to modify WebSocket frame, then send it or save to a file.
+
+Note : 
+Currenly Key header value is hardcoded in the code. You can easly find the line and replace it to what ever you want.
+Mask is also hardcoded that is "BEEF" (may not be to change easily). 
 
 # Supported Features
 
