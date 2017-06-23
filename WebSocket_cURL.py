@@ -54,16 +54,16 @@ class WebSocket_cURL():
         self.bufsize = 4096
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Constructing header
-        self.header = 'GET /' + url + ' HTTP/1.1\n'
-        self.header += 'Host: ' + host + '\n'
-        self.header += 'Connection: Upgrade\n'
-        self.header += 'Upgrade: websocket\n'
-        self.header += 'Sec-WebSocket-Version: 13\n'
-        self.header += 'Sec-WebSocket-Key: n5twxG/tNPf8h3po+pNrPA==\n'
-        self.header += 'User-Agent: WebSocket_cURL\n'
+        self.header = 'GET /' + url + ' HTTP/1.1\r\n'
+        self.header += 'Host: ' + host + '\r\n'
+        self.header += 'Connection: Upgrade\r\n'
+        self.header += 'Upgrade: websocket\r\n'
+        self.header += 'Sec-WebSocket-Version: 13\r\n'
+        self.header += 'Sec-WebSocket-Key: n5twxG/tNPf8h3po+pNrPA==\r\n'
+        self.header += 'User-Agent: WebSocket_cURL\r\n'
         for h in custom_header:
-            self.header += h + '\n'
-        self.header += '\n'
+            self.header += h + '\r\n'
+        self.header += '\r\n'
         # Constructing data
         self.data_to_send = data_to_send
         #print ('')
