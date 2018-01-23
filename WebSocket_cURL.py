@@ -19,6 +19,8 @@ from contextlib import closing
 from array import array
 import click
 import re
+import time
+
 
 class SyntaxHandler():
     u''' This class handles command arguments '''
@@ -47,19 +49,20 @@ class SyntaxHandler():
 class WebSocket_cURL():
     u''' Open socket and establish WebSocket '''
     
-    def __init__(self, host, port, url, opcode, data_to_send, custom_header):
+    def __init__(self, host, port, url, opcode, data_to_send, custom_header, key):
         # Constructing socket
         self.host = host
         self.port = int(port)
         self.bufsize = 4096
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #self.sock = ssl.wrap_socket(self.sock, ca_certs=None, cert_reqs=ssl.CERT_NONE)
         # Constructing header
         self.header = 'GET /' + url + ' HTTP/1.1\r\n'
         self.header += 'Host: ' + host + '\r\n'
         self.header += 'Connection: Upgrade\r\n'
         self.header += 'Upgrade: websocket\r\n'
+        self.header += key
         self.header += 'Sec-WebSocket-Version: 13\r\n'
-        self.header += 'Sec-WebSocket-Key: n5twxG/tNPf8h3po+pNrPA==\r\n'
         self.header += 'User-Agent: WebSocket_cURL\r\n'
         for h in custom_header:
             self.header += h + '\r\n'
@@ -78,17 +81,18 @@ class WebSocket_cURL():
         self.close_frame = [136, 128, 66, 69, 69, 70] 
         for i in self.close_frame:
             self.arr_close_frame.append(i)
-        
+
     def run(self):
         with closing(self.sock):
             self.sock.connect((self.host, self.port))
             print (self.header)
             self.sock.send(self.header)
             print(self.sock.recv(self.bufsize))
-            
-            #print('sending WebScoket frame')
+           
+            print('sending WebScoket frame')
             self.sock.send(self.data_to_send)
-            #self.sock.recv(self.bufsize)
+            self.sock.recv(self.bufsize)
+            print(self.sock.recv(self.bufsize))
             self.sock.send(self.arr_close_frame)
             self.sock.recv(self.bufsize)
         return 
@@ -103,6 +107,7 @@ class DataHandler():
         if op == '-a':
             self.readArray(data)
             self.genArrayFromHex()
+            #print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         elif op == '-s':
             self.string = data
             self.payloadLen = len(data)
@@ -239,7 +244,8 @@ class DataHandler():
         self.hexlist = self.hexlist.split(',')
          
     def readBinaryFile(self, file):
-        self.f = file
+        print(file)
+        self.f = open(file, 'rb')
         self.binary_hexlist = []
         for b in self.f.read():
             self.binary_hexlist.append(hex(ord(b)))
@@ -607,7 +613,8 @@ class FrameCrafter():
 @click.option('-a', '--array', type=click.File('r'), help='Give a path of frame hex data')
 @click.option('-e', '--editor', is_flag=True, help='This enters FrameCrafter menu')
 @click.option('-H', '--header', multiple=True, help='Add HTTP headers')
-def syntax_parser(host, port, url, string, binary, array, editor, header):
+@click.option('-k', '--key', help='Specify your Sec-WebSocekt-Key, otherwise we supply a default key')
+def syntax_parser(host, port, url, string, binary, array, editor, header, key):
     url = re.sub(r'^/', '', url)
     custom_header = []
     if string:
@@ -630,7 +637,12 @@ def syntax_parser(host, port, url, string, binary, array, editor, header):
         data_to_send = frame_crafter.frameAnalyzer()
     else:
         data_to_send = data_handler.getArray()
-    client = WebSocket_cURL(host, port, url, opcode, data_to_send, custom_header).run()
+    if key:
+		sec_key = 'Sec-WebSocket-Key: ' + key + '\r\n'
+    else:
+		sec_key = 'Sec-WebSocket-Key: n5twxG/tNPf8h3po+pNrPA==\r\n'
+
+    client = WebSocket_cURL(host, port, url, opcode, data_to_send, custom_header, sec_key).run()
 
 if __name__ == '__main__':
     syntax_parser()
