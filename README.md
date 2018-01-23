@@ -68,6 +68,8 @@ Options:
   -e, --editor           This enters FrameCrafter menu
 
   -H, --header TEXT      Add HTTP headers
+  
+  -k, --key TEXT         Specify Sec-WebSocket-Key header value, otherwise it uses default value
 
   --help                 Show this message and exit.
   
