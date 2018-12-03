@@ -10,8 +10,8 @@ This script is not only sending data but also there is a cool feature, FrameCraf
 enables you to modify WebSocket frame, then send it or save to a file.
 
 Note : 
-Currenly Key header value is hardcoded in the code. You can easly find the line and replace it to what ever you want.
-Mask is also hardcoded that is "BEEF" (may not be to change easily). 
+You can set Sec-WebSocket-Key value via -k option. You can add HTTP header via -H option.
+Mask is also hardcoded that is "BEEF".
 
 # Supported Features
 
